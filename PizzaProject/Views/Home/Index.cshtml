@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Pizza>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<h2 style="margin-bottom: 50px; margin-top: 150px">Пицца</h2>
+<div class="pizzas-container">
+@foreach (var pizza in Model)
+{
+    <div class="pizza-div">
+        <div class="pizza-img" style="outline: none;">
+            <img src="@pizza.PictureUrl" width="292" alt="Изображение пиццы">
+        </div>
+        <div class="pizza-name">@pizza.Name</div>
+        <div class="pizza-desk">@pizza.Description</div>
+        <div class="pizza-footer">
+            <div style="font-size: 20px; margin-top: 10px">@pizza.Price.ToString("C2")</div>
+            <div class="pizza-btn">Выбрать</div>
+        </div>
+    </div>
+}
+</div>
+
+<style>
+    .pizza-div {
+        display: block;
+        width: 292px;
+        height: 500px;
+        word-break: break-all;
+    }
+
+    .pizza-name {
+        margin-top: 40px;
+        font-size: 24px;
+    }
+
+    .pizza-footer {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .pizza-btn {
+        font-size: 20px;
+        background-color: #a8ffc9;
+        border-radius: 10px;
+        padding: 10px 20px;
+        cursor: pointer;
+    }
+
+    .pizzas-container {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    .pizzas-container::after {
+        content: "";
+        flex: auto;
+    }
+
+    @@media only screen and (max-width: 780px)
+    {
+        .pizzas-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+    }
+</style>
