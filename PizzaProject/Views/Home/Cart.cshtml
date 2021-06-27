@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Pizza>
+
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<h1>Корзина</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Название товара</th>
+            <th>Цена</th>
+            <th>Кол-во</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody id="content">
+    </tbody>
+</table>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+    var cart = [{ id: 0, count: 0 }]
+    var storage = window.localStorage;
+    var fullPrice = 0;
+
+    loadCart();
+    console.log(cart);
+
+    function saveCart() {
+        storage.setItem('cart', JSON.stringify(cart));
+    }
+
+    function loadCart() {
+        cartJson = storage.getItem('cart');
+        cart = JSON.parse(cartJson);
+
+        initializeUi();
+    }
+
+    function initializeUi() {
+        for (let i = 0; i < cart.length; i++) {
+            drawPizza(cart[i]);
+        }
+
+        // Отрисовка итоговой стоимости
+        $('#content').append(`
+            <tr>
+                <td></td>
+                <td></td>
+                <td><b>Итого:</b></td>
+                <td><b>${fullPrice} ₽</b></td>
+            </tr>`);
+    }
+
+    function getCountById(id) {
+        for (let i = 0; i < cart.length; i++) {
+            if (cart[i].id == id) {
+                return cart[i].count;
+            }
+        }
+
+        return 0;
+    }
+
+    function drawPizza(pizza) {
+        let count = getCountById(pizza.id);
+
+        if (count < 1)
+            return;
+
+        let priceText = pizza.price.split(' ')[0]
+        let price = parseFloat(priceText)
+
+        fullPrice += price * count;
+
+        $('#content').append(`
+            <tr>
+                <td>${pizza.name}</td>
+                <td>${pizza.price}</td>
+                <td>${count}</td>
+                <td>${price * count} ₽</td>
+            </tr>`);
+    }
+</script>
