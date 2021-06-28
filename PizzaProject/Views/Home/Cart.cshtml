@@ -1,10 +1,9 @@
-﻿@model IEnumerable<Pizza>
-
+﻿
 @{
     ViewData["Title"] = "Корзина";
 }
 
-<h1>Корзина</h1>
+<h1 style="margin-top: 80px; margin-bottom: 40px;">Корзина</h1>
 
 <table class="table">
     <thead>
@@ -51,7 +50,7 @@
                 <td></td>
                 <td></td>
                 <td><b>Итого:</b></td>
-                <td><b>${fullPrice} ₽</b></td>
+                <td><b>${fullPrice},00 ₽</b></td>
             </tr>`);
     }
 
@@ -81,7 +80,7 @@
                 <td>${pizza.name}</td>
                 <td>${pizza.price}</td>
                 <td>${count}</td>
-                <td>${price * count} ₽</td>
+                <td>${price * count},00 ₽</td>
             </tr>`);
     }
 </script>

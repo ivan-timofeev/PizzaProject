@@ -28,9 +28,9 @@ namespace PizzaProject.Controllers
             return View(await _context.PizzaList.ToListAsync());
         }
 
-        public async Task<IActionResult> Cart()
+        public IActionResult Cart()
         {
-            return View(await _context.PizzaList.ToListAsync());
+            return View();
         }
 
         public IActionResult Privacy()
