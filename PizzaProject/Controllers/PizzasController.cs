@@ -20,9 +20,29 @@ namespace PizzaProject.Controllers
         }
 
         // GET: Pizzas
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string searchString)
         {
-            return View(await _context.PizzaList.ToListAsync());
+            if (searchString == null)
+            {
+                return View(await _context.PizzaList.ToListAsync());
+            }
+
+            var pizzas = await _context.PizzaList.ToListAsync();
+            var searchResult = new List<Pizza>();
+
+            foreach (var pizza in pizzas)
+            {
+                // Добавляем только если строка поиска целиком содержится в названии пиццы ИЛИ
+                // дистанция которых до исходной меньше чем три
+                // (Те строки, которые достаточно похожи на исходную строку)
+                if (pizza.Name.ToLower().Contains(searchString.ToLower()) ||
+                   (Utils.Algorithms.LevenshteinDistance(pizza.Name.ToLower(), searchString.ToLower()) < 3))
+                {
+                    searchResult.Add(pizza);
+                }
+            }
+
+            return View(searchResult);
         }
 
         // GET: Pizzas/Details/5
