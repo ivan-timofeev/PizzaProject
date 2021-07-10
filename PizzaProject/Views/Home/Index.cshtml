@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Pizza>
+﻿@model PizzaProject.ViewModels.HomeViewModel
 
 @{
     ViewData["Title"] = "Home Page";
@@ -9,10 +9,10 @@
 </div>
 
 <div class="pizzas-container">
-@foreach (var pizza in Model)
+@foreach (var pizza in Model.PizzaList)
 {
     <div class="pizza-div">
-        <div class="pizza-img" onclick="addPizza(@pizza.Id)" style="outline: none;">
+        <div class="pizza-img" style="outline: none;">
             <img src="@pizza.PictureUrl" width="292" alt="Изображение пиццы">
         </div>
         <div class="pizza-name" id="pizza-name-@pizza.Id">@pizza.Name</div>
@@ -20,7 +20,16 @@
         <div class="pizza-footer">
             <div style="font-size: 20px; margin-top: 10px" id="pizza-price-@pizza.Id">@pizza.Price.ToString("C2")</div>
             <div class="pizza-btn-container" id="btn-container-@pizza.Id">
-                <div class="pizza-btn" onclick="addPizza(@pizza.Id)">Добавить</div>
+               @if (Model.Cart.Items.FirstOrDefault(t => t.Pizza.Id == pizza.Id) != null)
+                {
+                    <div class="pizza-sub-btn" onclick="remPizza(@pizza.Id)">-</div>
+                    <div class="pizza-counter" id="pizza-counter-@pizza.Id">@Model.Cart.Items.FirstOrDefault(t => t.Pizza.Id == pizza.Id).Count</div>
+                    <div class="pizza-sub-btn" onclick="addPizza(@pizza.Id)">+</div>
+                }
+                else
+                {
+                    <div class="pizza-btn" onclick="firstAddPizza(@pizza.Id)">Добавить</div>
+                }
             </div>
         </div>
     </div>
@@ -30,90 +39,53 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 <script>
-    var cart = [{ id: 0, count: 0 }]
-    var storage = window.localStorage;
-
-    loadCart();
-    console.log(cart);
-
-    function saveCart() {
-        storage.setItem('cart', JSON.stringify(cart));
-    }
-
-    function loadCart() {
-        cartJson = storage.getItem('cart');
-        cart = JSON.parse(cartJson);
-
-        initializeUi();
-    }
-
-    // Обновление пользовательского интерфейса после загрузки корзины
-    function initializeUi() {
-        for (let i = 0; i < cart.length; i++) {
-            updateUi(cart[i].id);
-        }
-    }
-
-    function getCountById(id) {
-        for (let i = 0; i < cart.length; i++) {
-            if (cart[i].id == id) {
-                return cart[i].count;
+    function firstAddPizza(id) {
+        $.ajax({
+            url: '@Url.Action("AddToCart", "Home")?pizzaId=' + id,
+            method: 'get',
+            dataType: 'html',
+            success: function (data) {
+                $('#btn-container-' + id).html(`<div class="pizza-sub-btn" onclick="remPizza(${id})">-</div>
+                    <div class="pizza-counter" id="pizza-counter-${id}">1</div>
+                    <div class="pizza-sub-btn" onclick="addPizza(${id})">+</div>`);
             }
-        }
-
-        return 0;
-    }
-
-    // Добавление пиццы в корзину
-    function addInCart(id, val = 1) {
-        let found = false;
-
-        for (let i = 0; i < cart.length; i++)
-        {
-            if (cart[i].id == id) {
-                cart[i].count += val;
-                cart[i].name = $(`#pizza-name-${id}`).html();
-                cart[i].price = $(`#pizza-price-${id}`).html();
-                found = true;
-            }
-        }
-
-        if (!found) {
-            cart.push({ id: parseInt(id), count: 1 });
-        }
-    }
-
-    // Обновление пользовательского интерфейса
-    function updateUi(id) {
-        if (getCountById(id) < 1) {
-            return $(`#btn-container-${id}`).html(`
-                <div class="pizza-btn" onclick="addPizza(${id})">Добавить</div>
-            `);
-        }
-
-        $(`#btn-container-${id}`).html(`
-            <div class="pizza-sub-btn" onclick="remPizza(${id})">-</div>
-            <div class="pizza-counter">${getCountById(id)}</div>
-            <div class="pizza-sub-btn" onclick="addPizza(${id})">+</div>
-        `);
+        });
     }
 
     // Кнопка "+"
     function addPizza(id) {
-        try {
-            addInCart(id);
-            updateUi(id);
-            saveCart();
-        } catch { cart = [{ id: 0, count: 0 }] }
+        $.ajax({
+            url: '@Url.Action("AddToCart", "Home")?pizzaId=' + id,
+            method: 'get',
+            dataType: 'html',
+            success: function (data) {
+                let text = $('#pizza-counter-' + id).text();
+                let count = parseInt(text);
+
+                $('#pizza-counter-' + id).html(count + 1)
+            }
+        });
     }
 
     // Кнопка "-"
     function remPizza(id) {
-        try {
-            addInCart(id, -1);
-            updateUi(id);
-            saveCart();
-        } catch { cart = [{ id: 0, count: 0 }] }
+        $.ajax({
+            url: '@Url.Action("RemoveFromCart", "Home")?pizzaId=' + id,
+            method: 'get',
+            dataType: 'html',
+            success: function (data) {
+                let text = $('#pizza-counter-' + id).text();
+                let count = parseInt(text);
+
+                if (count - 1 <= 0) {
+                    $('#btn-container-' + id).html(`<div class="pizza-btn" onclick="firstAddPizza(${id})">Добавить</div>`);
+                } else {
+                    $('#pizza-counter-' + id).html(count - 1);
+                }
+            }
+        });
+
+
     }
 </script>
 
@@ -133,7 +105,6 @@
 
     .pizza-img {
         display: block;
-        cursor: pointer;
         transition: 0.2s;
     }
 
@@ -154,13 +125,15 @@
     }
 
     .pizza-btn {
+        border: none;
+        outline: none;
+
         font-size: 20px;
         background-color: lightgreen;
         border-radius: 10px;
         padding: 8px 14px;
         cursor: pointer;
         transition: 0.2s;
-
         -ms-user-select: none;
         -moz-user-select: none;
         -khtml-user-select: none;
@@ -182,19 +155,19 @@
     }
 
     .pizza-sub-btn {
+        border: none;
+        outline: none;
+
         font-size: 20px;
         background-color: lightgreen;
         border-radius: 10px;
         padding: 5px;
         cursor: pointer;
         transition: 0.2s;
-
         width: 40px;
         height: 40px;
-
         text-align: center;
         vertical-align: central;
-
         -ms-user-select: none;
         -moz-user-select: none;
         -khtml-user-select: none;

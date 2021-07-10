@@ -9,6 +9,15 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using System.Text.Json;
+
+using PizzaProject.ViewModels;
+
 namespace PizzaProject.Controllers
 {
     public class HomeController : Controller
@@ -25,12 +34,78 @@ namespace PizzaProject.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.PizzaList.ToListAsync());
+            var viewModel = new HomeViewModel
+            {
+                PizzaList = await _context.PizzaList.ToListAsync(),
+                Cart = GetCart()
+            };
+
+            return View(viewModel);
+        }
+
+        public RedirectToActionResult AddToCart(int pizzaId, string returnUrl)
+        {
+            var pizza = _context.PizzaList.FirstOrDefault(t => t.Id == pizzaId);
+
+            if (pizza is not null)
+            {
+                var cart = GetCart();
+                cart.AddItem(pizza);
+
+                SaveCart(cart);
+            }
+
+            return RedirectToAction("Index", new { returnUrl });
+        }
+
+        public RedirectToActionResult RemoveFromCart(int pizzaId, string returnUrl)
+        {
+            var pizza = _context.PizzaList.FirstOrDefault(t => t.Id == pizzaId);
+
+            if (pizza is not null)
+            {
+                var cart = GetCart();
+                cart.RemoveItem(pizza);
+
+                SaveCart(cart);
+            }
+
+            return RedirectToAction("Index", new { returnUrl });
+        }
+
+        public void SaveCart(Cart cart)
+        {
+            var cartString = JsonSerializer.Serialize(cart);
+
+            HttpContext.Session.SetString("cart", cartString);
+        }
+
+        public Cart GetCart()
+        {
+            var cartString = HttpContext.Session.GetString("cart");
+            Cart cart;
+
+            if (cartString is null)
+            {
+                cart = new Cart();
+                SaveCart(cart);
+            }
+            else
+            {
+                cart = JsonSerializer.Deserialize<Cart>(cartString);
+            }
+
+            return cart;
         }
 
         public IActionResult Cart()
         {
-            return View();
+            if (GetCart().Items.Count == 0)
+            {
+                return View("EmptyCart");
+            }
+
+            return View(GetCart().Items);
         }
 
         public IActionResult Privacy()

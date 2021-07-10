@@ -28,6 +28,9 @@ namespace PizzaProject
         {
             services.AddControllersWithViews();
 
+            services.AddDistributedMemoryCache();
+            services.AddSession();
+
             services.AddDbContext<PizzaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PizzaContext")));
         }
@@ -46,7 +49,7 @@ namespace PizzaProject
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            app.UseSession();
             app.UseStaticFiles();
 
             app.UseRouting();

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<Cart.Item>
+@{
+    ViewData["Title"] = "Корзина";
+}
+
+<h1 style="margin-top: 80px; margin-bottom: 40px;">Корзина пуста</h1>
+<div style="font-size: 22px;">Вы можете выбрать пиццу или насладиться изображением смородины</div>
+<div class="img-container">
+    <div><img src="/img/smorodina.jpeg" class="big smorodina" alt="Smorodina.jpeg" /></div>
+    <div><img src="/img/smorodina3.jpeg" class="big smorodina" alt="Smorodina.jpeg" /></div>
+
+    <div><img src="/img/smorodina2.jpeg" class="big smorodina" alt="Smorodina.jpeg" /></div>
+    <div><img src="/img/smorodina4.jpeg" class="big smorodina last" alt="Smorodina.jpeg" /></div>
+</div>
+
+
+<style>
+    .big {
+        height: 300px;
+    }
+
+    .small {
+        width: 600px;
+    }
+
+    .smorodina {
+        margin-right: 20px;
+        margin-top: 20px;
+    }
+
+    .last {
+        object-fit: cover;
+        width: 400px;
+    }
+
+    .img-container {
+        margin-top: 25px;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        margin-bottom: 400px;
+    }
+</style>

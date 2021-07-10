@@ -1,4 +1,4 @@
-﻿
+﻿@model IEnumerable<Cart.Item>
 @{
     ViewData["Title"] = "Корзина";
 }
@@ -9,78 +9,63 @@
     <thead>
         <tr>
             <th>Название товара</th>
-            <th>Цена</th>
-            <th>Кол-во</th>
+            <th class="td-price">Цена</th>
             <th></th>
+            <th>Кол-во</th>
         </tr>
     </thead>
     <tbody id="content">
+       @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Pizza.Name</td>
+                <td class="td-price">@String.Format("{0:f}", item.Pizza.Price)</td>
+                <td></td>
+                <td>@item.Count</td>
+            </tr>
+        }
     </tbody>
 </table>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<div class="final-sum">
+    <b>Итого:</b>
+    <span class="final-sum-value">@String.Format("{0:f}", Model.Sum(t => t.Pizza.Price * t.Count)) руб.</span>
+    <div><a class="order-btn" href="/">Оформить заказ</a></div>
+</div>
 
-<script>
-    var cart = [{ id: 0, count: 0 }]
-    var storage = window.localStorage;
-    var fullPrice = 0;
-
-    loadCart();
-    console.log(cart);
-
-    function saveCart() {
-        storage.setItem('cart', JSON.stringify(cart));
+<style>
+    .td-price {
+        text-align: right;
     }
 
-    function loadCart() {
-        cartJson = storage.getItem('cart');
-        cart = JSON.parse(cartJson);
-
-        initializeUi();
+    .final-sum {
+        margin: 40px 80px;
+        text-align: right;
     }
 
-    function initializeUi() {
-        for (let i = 0; i < cart.length; i++) {
-            drawPizza(cart[i]);
-        }
-
-        // Отрисовка итоговой стоимости
-        $('#content').append(`
-            <tr>
-                <td></td>
-                <td></td>
-                <td><b>Итого:</b></td>
-                <td><b>${fullPrice},00 ₽</b></td>
-            </tr>`);
+    .final-sum-value {
+        margin-left: 40px;
     }
 
-    function getCountById(id) {
-        for (let i = 0; i < cart.length; i++) {
-            if (cart[i].id == id) {
-                return cart[i].count;
-            }
-        }
+    .order-btn {
+        margin-top: 20px;
+        color: black;
+        display: inline-block;
+        background-color: lightgreen;
+        border-radius: 10px;
+        padding: 8px 14px;
+        cursor: pointer;
+        transition: 0.2s;
+        -ms-user-select: none;
+        -moz-user-select: none;
+        -khtml-user-select: none;
+        -webkit-user-select: none;
 
-        return 0;
+        text-decoration: none;
     }
 
-    function drawPizza(pizza) {
-        let count = getCountById(pizza.id);
-
-        if (count < 1)
-            return;
-
-        let priceText = pizza.price.split(' ')[0]
-        let price = parseFloat(priceText)
-
-        fullPrice += price * count;
-
-        $('#content').append(`
-            <tr>
-                <td>${pizza.name}</td>
-                <td>${pizza.price}</td>
-                <td>${count}</td>
-                <td>${price * count},00 ₽</td>
-            </tr>`);
+    .order-btn:hover {
+        color: black;
+        text-decoration: none;
     }
-</script>
+</style>
