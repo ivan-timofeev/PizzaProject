@@ -1,24 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 namespace PizzaProject.Models
 {
-    public class Pizza
-    {
-        public int      Id              { get; set; }
-        public string   Name            { get; set; }
-        public string   Description     { get; set; }
-
-        [Display(Name = "Picture URL")]
-        public string   PictureUrl      { get; set; }
-
-        [Column(TypeName = "decimal(18,4)")]
-        public decimal  Price           { get; set; }
-        
-    }
-
     public class Cart
     {
         public List<Item> Items { get; set; }
@@ -74,6 +58,4 @@ namespace PizzaProject.Models
             public int Count { get; set; }
         }
     }
-
-    
 }
