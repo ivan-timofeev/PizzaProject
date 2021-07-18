@@ -86,5 +86,19 @@ namespace PizzaProject.Utils
 
             return t1;
         }
+
+        /// <summary>
+        /// Вернет первую строку, если предикат является истинным
+        /// Иначе вернет вторую строку
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <param name="t1"></param>
+        /// <param name="t2"></param>
+        /// <returns></returns>
+        public static string SelectString(bool predicate, string t1, string t2)
+        {
+            if (predicate) return t1;
+            else return t2;
+        }
     }
 }

@@ -45,23 +45,15 @@
         <dt class="col-sm-4">
             Верефицирован
         </dt>
-       @if (Model.Verified)
-        {
-            <dd class="col-sm-6">
-                Да
-            </dd>
-        }
-        else
-        {
-            <dd class="col-sm-6">
-                Нет
-            </dd>
-        }
+        <dd class="col-sm-6">
+            @SelectString(Model.Verified, "Да", "Нет")
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Изменить</a> |
-    <a asp-action="Index" asp-controller="Home">На главную</a>
+    <a asp-action="Edit">Изменить</a> |
+    <a asp-action="Logout">Выйти</a> |
+    <a asp-action="Index">На главную</a>
 </div>
 
 <style>

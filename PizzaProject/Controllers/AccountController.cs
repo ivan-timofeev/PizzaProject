@@ -32,6 +32,23 @@ namespace PizzaProject.Controllers
         }
 
         [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> Edit()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            var model = new EditViewModel()
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                UserName = user.UserName
+            };
+
+            return View(model);
+        }
+
+        [HttpGet]
         public IActionResult Register()
         {
             return View();
@@ -114,6 +131,23 @@ namespace PizzaProject.Controllers
                     ModelState.AddModelError("", "Неправильный логин и (или) пароль");
                 }
             }
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(EditViewModel model)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.LastEditDate = DateTime.Now;
+
+            await _userManager.UpdateAsync(user);
+
+            model.IsEdited = true;
 
             return View(model);
         }
