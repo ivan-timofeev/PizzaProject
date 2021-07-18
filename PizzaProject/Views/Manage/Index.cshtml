@@ -1,0 +1,53 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+
+    var dictionary = new Dictionary<string, string>();
+
+    foreach (var property in user.GetType().GetProperties())
+    {
+        var value = property.GetValue(user);
+
+        if (value != null) dictionary.Add(property.Name, property.GetValue(user).ToString());
+        else dictionary.Add(property.Name, "null");
+    }
+}
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<h1 style="margin-top: 80px; margin-bottom: 40px;">Управление</h1>
+
+<div>
+    <div class="big-button"><a href="@Url.Action("Index", "Pizzas")">Блюда</a></div>
+    <div class="big-button"><a href="@Url.Action("Index", "Pizzas")">Пользователи</a></div>
+    <div class="big-button"><a href="@Url.Action("Index", "Pizzas")">Sample Text</a></div>
+</div>
+
+<style>
+    .big-button {
+        display: inline-flex;
+        background-color: lightgreen;
+        font-size: 1.1em;
+        margin-right: 20px;
+        color: black;
+    }
+
+    .big-button > a {
+        color: black;
+        width: 100%;
+        height: 100%;
+        padding: 12px 32px;
+    }
+
+    .big-button>a:hover {
+        color: black;
+        text-decoration: none;
+    }
+
+    .big-button:hover {
+        text-decoration: none;
+        color: black;
+    }
+</style>

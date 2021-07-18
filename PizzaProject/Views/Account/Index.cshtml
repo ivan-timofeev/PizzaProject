@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Dynamic
+
+@{
+    var user = await UserManager.GetUserAsync(User);
+
+    var dictionary = new Dictionary<string, string>();
+
+    foreach (var property in user.GetType().GetProperties())
+    {
+        var value = property.GetValue(user);
+
+        if (value != null) dictionary.Add(property.Name, property.GetValue(user).ToString());
+        else dictionary.Add(property.Name, "null");
+    }
+}
+
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+<h1 style="margin-top: 80px; margin-bottom: 40px;">Аккаунт</h1>
+
+<h4 style="margin-bottom: 20px;">Поля текущего пользователя:</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Свойство</th>
+            <th class="td-price">Значение</th>
+        </tr>
+    </thead>
+    <tbody id="content">
+        @foreach (var t in dictionary)
+        {
+            <tr>
+                <td>@t.Key</td>
+                <td>@t.Value</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="@Url.Action("Logout", "Account")">Выйти</a>

@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Управление";
+}
+
+
+<div style="margin-top: 100px">
+    <h3>Для просмотра этого содержимого<br />необходима авторизация</h3>
+</div>
+
+
+<div class="buttons">
+    <a class="button" style="margin-right: 20px;" asp-controller="Account" asp-action="Register">Создать аккаунт</a>
+    <a class="button" style="background-color: mediumaquamarine;" asp-controller="Account" asp-action="Login">Войти</a>
+</div>
+
+
+<style>
+    .buttons {
+        display: block;
+        margin-top: 50px;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 8px 18px;
+        border-radius: 10px;
+        background-color: lightcoral;
+        color: white;
+        transition: 0.2s;
+    }
+
+    .button:hover {
+        text-decoration: none;
+        color: white;
+        background-color: gray !important;
+    }
+</style>

@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 
 using PizzaProject.Data;
 using Microsoft.EntityFrameworkCore;
+using PizzaProject.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace PizzaProject
 {
@@ -33,6 +35,15 @@ namespace PizzaProject
 
             services.AddDbContext<PizzaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PizzaContext")));
+
+            services.AddIdentity<User, IdentityRole>(options => {
+                options.Password.RequiredLength = 4;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireDigit = false;
+            })
+                .AddEntityFrameworkStores<PizzaContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +65,7 @@ namespace PizzaProject
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
