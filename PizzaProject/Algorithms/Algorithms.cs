@@ -71,5 +71,20 @@ namespace PizzaProject.Utils
 
             return hashed;
         }
+
+        /// <summary>
+        /// Вернет вторую строку, если первая является пустой
+        /// иначе вернет вторую строку
+        /// </summary>
+        /// <param name="t1"></param>
+        /// <param name="t2"></param>
+        /// <returns></returns>
+        public static string SelectString(string t1, string t2)
+        {
+            if (string.IsNullOrWhiteSpace(t1))
+                return t2;
+
+            return t1;
+        }
     }
 }

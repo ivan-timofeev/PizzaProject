@@ -9,13 +9,11 @@ namespace PizzaProject.Data
         public PizzaContext(DbContextOptions<PizzaContext> options)
             : base(options)
         {
-            Database.EnsureCreated();
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             modelBuilder.Entity<Pizza>().HasData(
                 new Pizza[]
                 {
@@ -24,6 +22,8 @@ namespace PizzaProject.Data
                     new Pizza { Id = 3,Name = "Пицца Пеперони", PictureUrl = "/img/3.jpeg", Price = 500, Description = "Большая пицца Пеперони, 35см, 570г."},
                     new Pizza { Id = 4,Name = "Пицца Ветчина и сыр", PictureUrl = "/img/4.jpeg", Price = 500, Description = "Большая пицца Ветчина и сыр, 35см, 570г."}
                 });
+
+            base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<Pizza> PizzaList { get; set; }

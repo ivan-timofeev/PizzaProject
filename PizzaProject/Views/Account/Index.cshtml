@@ -1,44 +1,75 @@
-﻿@using Microsoft.AspNetCore.Identity
-@using System.Dynamic
+﻿@model PizzaProject.Models.User
+@using static PizzaProject.Utils.Algorithms
 
 @{
-    var user = await UserManager.GetUserAsync(User);
-
-    var dictionary = new Dictionary<string, string>();
-
-    foreach (var property in user.GetType().GetProperties())
-    {
-        var value = property.GetValue(user);
-
-        if (value != null) dictionary.Add(property.Name, property.GetValue(user).ToString());
-        else dictionary.Add(property.Name, "null");
-    }
+    ViewData["Title"] = "Мой аккаунт";
 }
 
+<h1 style="margin-top: 100px; margin-bottom: 40px;">Мой аккаунт</h1>
 
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+<div>
+    <h4>@Model.UserName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-4">
+            Email
+        </dt>
+        <dd class="col-sm-6">
+            @Model.Email
+        </dd>
+        <dt class="col-sm-4">
+            Имя
+        </dt>
+        <dd class="col-sm-6">
+            @SelectString(Model.FirstName, "Информация отсутствует")
+        </dd>
+        <dt class="col-sm-4">
+            Фамилия
+        </dt>
+        <dd class="col-sm-6">
+            @SelectString(Model.LastName, "Информация отсутствует")
+        </dd>
+        <dt class="col-sm-4">
+            Дата регистрации
+        </dt>
+        <dd class="col-sm-6">
+            @Model.RegistrationDate
+        </dd>
+        <dt class="col-sm-4">
+            Дата изменения
+        </dt>
+        <dd class="col-sm-6">
+            @Model.LastEditDate
+        </dd>
 
-<h1 style="margin-top: 80px; margin-bottom: 40px;">Аккаунт</h1>
-
-<h4 style="margin-bottom: 20px;">Поля текущего пользователя:</h4>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>Свойство</th>
-            <th class="td-price">Значение</th>
-        </tr>
-    </thead>
-    <tbody id="content">
-        @foreach (var t in dictionary)
+        <dt class="col-sm-4">
+            Верефицирован
+        </dt>
+       @if (Model.Verified)
         {
-            <tr>
-                <td>@t.Key</td>
-                <td>@t.Value</td>
-            </tr>
+            <dd class="col-sm-6">
+                Да
+            </dd>
         }
-    </tbody>
-</table>
+        else
+        {
+            <dd class="col-sm-6">
+                Нет
+            </dd>
+        }
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model.Id">Изменить</a> |
+    <a asp-action="Index" asp-controller="Home">На главную</a>
+</div>
 
-<a href="@Url.Action("Logout", "Account")">Выйти</a>
+<style>
+    * {
+        word-break: break-all;
+    }
+
+    dd {
+        min-height: 22px;
+    }
+</style>

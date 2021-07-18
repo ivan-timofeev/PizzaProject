@@ -24,9 +24,11 @@ namespace PizzaProject.Controllers
 
         [HttpGet]
         [Authorize]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var user = await _userManager.GetUserAsync(User);
+
+            return View(user);
         }
 
         [HttpGet]

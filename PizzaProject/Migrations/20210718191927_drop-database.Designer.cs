@@ -10,8 +10,8 @@ using PizzaProject.Data;
 namespace PizzaProject.Migrations
 {
     [DbContext(typeof(PizzaContext))]
-    [Migration("20210718145637_added-identity-core")]
-    partial class addedidentitycore
+    [Migration("20210718191927_drop-database")]
+    partial class dropdatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -273,6 +273,9 @@ namespace PizzaProject.Migrations
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("Verified")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 

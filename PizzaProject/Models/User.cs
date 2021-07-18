@@ -12,5 +12,7 @@ namespace PizzaProject.Models
 
         public string FirstName { get; set; }
         public string LastName { get; set; }
+
+        public bool Verified { get; set; }
     }
 }
