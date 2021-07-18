@@ -4,6 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PizzaProject.Models
 {
+    public enum Role
+    {
+        Banned = -1,
+        User = 0,
+        Admin = 1
+    }
+
     public class User
     {
         public int Id { get; set; }
@@ -15,5 +22,7 @@ namespace PizzaProject.Models
 
         public string Firstname { get; set; }
         public string Lastname { get; set; }
+
+        public Role UserRole { get; set; }
     }
 }

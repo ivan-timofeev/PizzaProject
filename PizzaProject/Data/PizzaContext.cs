@@ -24,5 +24,7 @@ namespace PizzaProject.Data
         }
 
         public DbSet<Pizza> PizzaList { get; set; }
+
+        public DbSet<User> UserList { get; set; }
     }
 }
