@@ -1,18 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 using PizzaProject.Data;
-using Microsoft.EntityFrameworkCore;
 using PizzaProject.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace PizzaProject
 {
@@ -36,7 +30,8 @@ namespace PizzaProject
             services.AddDbContext<PizzaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("PizzaContext")));
 
-            services.AddIdentity<User, IdentityRole>(options => {
+            services.AddIdentity<User, IdentityRole>(options =>
+            {
                 options.Password.RequiredLength = 4;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireLowercase = false;

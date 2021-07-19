@@ -5,14 +5,14 @@ namespace PizzaProject.Models
 {
     public class Pizza
     {
-        public int      Id              { get; set; }
-        public string   Name            { get; set; }
-        public string   Description     { get; set; }
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
 
         [Display(Name = "Picture URL")]
-        public string   PictureUrl      { get; set; }
+        public string PictureUrl { get; set; }
 
         [Column(TypeName = "decimal(18,4)")]
-        public decimal  Price           { get; set; }
+        public decimal Price { get; set; }
     }
 }

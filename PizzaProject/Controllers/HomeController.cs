@@ -1,22 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using PizzaProject.Data;
 using PizzaProject.Models;
-using System;
-using System.Collections.Generic;
+using PizzaProject.ViewModels;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
-
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using System.Text.Json;
-
-using PizzaProject.ViewModels;
+using System.Threading.Tasks;
 
 namespace PizzaProject.Controllers
 {
