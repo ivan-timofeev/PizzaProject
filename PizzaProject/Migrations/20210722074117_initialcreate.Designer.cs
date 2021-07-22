@@ -10,7 +10,7 @@ using PizzaProject.Data;
 namespace PizzaProject.Migrations
 {
     [DbContext(typeof(PizzaContext))]
-    [Migration("20210722072941_initialcreate")]
+    [Migration("20210722074117_initialcreate")]
     partial class initialcreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

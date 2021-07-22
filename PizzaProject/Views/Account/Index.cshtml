@@ -11,6 +11,10 @@
 
 <div>
     <h4>@Model.BaseObject.UserName</h4>
+    @if (Model.IsAdmin)
+    {
+        <div class="admin-div">Администратор</div>
+    }
     <hr />
     <dl class="row">
         <dt class="col-sm-4">
@@ -50,16 +54,6 @@
         <dd class="col-sm-6">
             @SelectString(Model.Verified, "Да", "Нет")
         </dd>
-
-       @if (Model.IsAdmin)
-        {
-            <dt class="col-sm-4">
-                Администратор?
-            </dt>
-            <dd class="col-sm-6">
-                Да
-            </dd>
-        }
     </dl>
 </div>
 <div>
@@ -75,5 +69,11 @@
 
     dd {
         min-height: 22px;
+    }
+
+    .admin-div {
+        background-color: lightgreen;
+        display: inline;
+        padding: 2px;
     }
 </style>

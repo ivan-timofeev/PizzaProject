@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PizzaProject.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "admin")]
     public class PizzasController : Controller
     {
         private readonly PizzaContext _context;

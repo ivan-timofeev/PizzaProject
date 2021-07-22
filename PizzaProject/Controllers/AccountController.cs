@@ -27,12 +27,23 @@ namespace PizzaProject.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
+            if (user is null)
+            {
+                return RedirectToAction("Login", "Account");
+            }
+
             var viewModel = new UserViewModel(user)
             {
                 IsAdmin = await _userManager.IsInRoleAsync(user, "admin")
             };
 
             return View(viewModel);
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied(string returnUrl)
+        {
+            return View((object) returnUrl);
         }
 
         [HttpGet]
