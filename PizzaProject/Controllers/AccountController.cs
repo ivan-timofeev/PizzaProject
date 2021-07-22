@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using PizzaProject.Data;
 using PizzaProject.Models;
 using PizzaProject.ViewModels;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace PizzaProject.Controllers
@@ -12,11 +14,13 @@ namespace PizzaProject.Controllers
     {
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
+        private PizzaContext _context;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, PizzaContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _context = context;
         }
 
         [HttpGet]
