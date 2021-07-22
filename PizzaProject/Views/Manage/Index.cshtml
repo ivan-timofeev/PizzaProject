@@ -1,22 +1,4 @@
-﻿@using Microsoft.AspNetCore.Identity
-
-@{
-    var user = await UserManager.GetUserAsync(User);
-
-    var dictionary = new Dictionary<string, string>();
-
-    foreach (var property in user.GetType().GetProperties())
-    {
-        var value = property.GetValue(user);
-
-        if (value != null) dictionary.Add(property.Name, property.GetValue(user).ToString());
-        else dictionary.Add(property.Name, "null");
-    }
-}
-
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
-
+﻿
 <h1 style="margin-top: 80px; margin-bottom: 40px;">Управление</h1>
 
 <div>
