@@ -14,13 +14,11 @@ namespace PizzaProject.Controllers
     {
         private UserManager<User> _userManager;
         private SignInManager<User> _signInManager;
-        private PizzaContext _context;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, PizzaContext context)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
-            _context = context;
         }
 
         [HttpGet]
