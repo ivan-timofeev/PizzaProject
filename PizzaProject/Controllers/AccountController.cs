@@ -25,7 +25,12 @@ namespace PizzaProject.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            return View(user);
+            var viewModel = new UserViewModel(user)
+            {
+                IsAdmin = await _userManager.IsInRoleAsync(user, "admin")
+            };
+
+            return View(viewModel);
         }
 
         [HttpGet]

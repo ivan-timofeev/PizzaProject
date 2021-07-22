@@ -1,5 +1,7 @@
-﻿@model PizzaProject.Models.User
+﻿@model PizzaProject.ViewModels.UserViewModel
 @using static PizzaProject.Utils.Algorithms
+
+@using Microsoft.AspNetCore.Identity
 
 @{
     ViewData["Title"] = "Мой аккаунт";
@@ -8,14 +10,14 @@
 <h1 style="margin-top: 100px; margin-bottom: 40px;">Мой аккаунт</h1>
 
 <div>
-    <h4>@Model.UserName</h4>
+    <h4>@Model.BaseObject.UserName</h4>
     <hr />
     <dl class="row">
         <dt class="col-sm-4">
             Email
         </dt>
         <dd class="col-sm-6">
-            @Model.Email
+            @Model.BaseObject.Email
         </dd>
         <dt class="col-sm-4">
             Имя
@@ -48,6 +50,16 @@
         <dd class="col-sm-6">
             @SelectString(Model.Verified, "Да", "Нет")
         </dd>
+
+       @if (Model.IsAdmin)
+        {
+            <dt class="col-sm-4">
+                Администратор?
+            </dt>
+            <dd class="col-sm-6">
+                Да
+            </dd>
+        }
     </dl>
 </div>
 <div>
