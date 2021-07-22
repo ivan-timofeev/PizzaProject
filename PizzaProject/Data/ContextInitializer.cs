@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using PizzaProject.Models;
+using System;
 using System.Threading.Tasks;
 
 namespace PizzaProject.Data
@@ -13,11 +14,13 @@ namespace PizzaProject.Data
 
             if (await userManager.FindByNameAsync("root") == null)
             {
-                var admin = new User 
-                { 
-                    Email = "root@aws.com", 
-                    UserName = "root", 
-                    Verified = true 
+                var admin = new User
+                {
+                    Email = "root@aws.com",
+                    UserName = "root",
+                    Verified = true,
+                    RegistrationDate = DateTime.Now,
+                    LastEditDate = DateTime.Now
                 };
 
                 IdentityResult result = await userManager.CreateAsync(admin, "root");
